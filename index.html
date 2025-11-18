@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axcentra LMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #6366f1;
+            --secondary: #8b5cf6;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --dark-text: #f1f5f9;
+            --light-bg: #f8fafc;
+            --light-card: #ffffff;
+            --light-text: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-theme {
+            --bg-color: var(--dark-bg);
+            --card-bg: var(--dark-card);
+            --text-color: var(--dark-text);
+            --shadow: var(--shadow-md);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        .light-theme {
+            --bg-color: var(--light-bg);
+            --card-bg: var(--light-card);
+            --text-color: var(--light-text);
+            --shadow: var(--shadow-light);
+            --input-bg: rgba(0, 0, 0, 0.03);
+            --input-border: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header Styles */
+        
+        header {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        /* Login Page Styles */
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px 0;
+        }
+        
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .login-card h2 {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .login-card p {
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+            padding-right: 45px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+        
+        .toggle-password:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        /* Dashboard Styles */
+        
+        .page-title {
+            margin: 30px 0;
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .course-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .course-image {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+        }
+        
+        .course-content {
+            padding: 20px;
+        }
+        
+        .course-content h3 {
+            margin-bottom: 10px;
+        }
+        
+        .course-content p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        /* Course Page Styles */
+        
+        .weeks-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .week-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .week-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .week-header {
+            padding: 20px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .week-header.locked {
+            background-color: #64748b;
+        }
+        
+        .week-content {
+            padding: 25px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            height: 0;
+            margin-bottom: 25px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .assignment-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        /* Profile Page Styles */
+        
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .profile-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--primary-light);
+        }
+        
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .change-photo {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .change-photo:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .analytics-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+        }
+        
+        .analytics-card h3 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .course-progress {
+            margin-bottom: 20px;
+        }
+        
+        .course-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .data-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        /* Utility Classes */
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-20 {
+            margin-top: 20px;
+        }
+        
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            background-color: var(--success);
+            color: white;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .back-btn {
+            margin-bottom: 15px;
+        }
+        /* Responsive adjustments */
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            .actions {
+                flex-direction: column;
+            }
+            .assignment-input {
+                min-width: 100%;
+            }
+        }
+        /* Login page specific styling */
+        
+        #login-page {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #login-page .container {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="dark-theme">
+    <!-- Header -->
+    <header id="header" class="hidden">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Axcentra LMS</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" id="dashboard-link" class="active">Dashboard</a>
+                    <a href="#" id="profile-link">Profile</a>
+                    <a href="#" id="logout-link">Logout</a>
+                </div>
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Page -->
+    <section id="login-page" class="container">
+        <div class="login-container">
+            <div class="login-card">
+                <h2>Welcome to Axcentra LMS</h2>
+                <p>Enter your credentials to access your courses</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-container">
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" id="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboard-page" class="container hidden">
+        <h1 class="page-title">My Courses</h1>
+        <div class="courses-grid" id="courses-container">
+            <!-- Courses will be dynamically added here -->
+        </div>
+    </section>
+
+    <!-- Course Page -->
+    <section id="course-page" class="container hidden">
+        <div class="page-header">
+            <button class="btn btn-outline back-btn" id="back-to-dashboard">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+            <h1 class="page-title" id="course-title">Course Title</h1>
+        </div>
+        <div class="weeks-container" id="weeks-container">
+            <!-- Weeks will be dynamically added here -->
+        </div>
+    </section>
+
+    <!-- Profile Page -->
+    <section id="profile-page" class="container hidden">
+        <h1 class="page-title">My Profile</h1>
+        <div class="profile-container">
+            <div class="profile-card">
+                <div class="profile-picture" id="profile-picture">
+                    <i class="fas fa-user"></i>
+                    <div class="change-photo" id="change-photo-btn">Change Photo</div>
+                </div>
+                <div class="profile-info">
+                    <h2 id="profile-name">Student Name</h2>
+                    <p id="profile-email">student@example.com</p>
+                    <button class="btn btn-outline" id="edit-profile-btn">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <h3>Course Analytics</h3>
+                <div id="profile-courses">
+                    <!-- Course analytics will be dynamically added here -->
+                </div>
+                <div class="data-actions">
+                    <button class="btn btn-primary" id="export-data">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn btn-outline" id="import-data">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                    <input type="file" id="import-file" class="hidden" accept=".json">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        Operation completed successfully!
+    </div>
+
+    <!-- Hidden file input for profile picture -->
+    <input type="file" id="profile-picture-input" class="hidden" accept="image/*">
+
+    <script>
+        // Data structure and initialization
+        const LMS = {
+            // Current user
+            currentUser: null,
+
+            // Course catalog with individual YouTube videos
+            courseCatalog: [{
+                id: 'c-programming',
+                title: 'C Programming',
+                description: 'Master the fundamentals of C programming language',
+                pdfFiles: {
+                    1: 'study_materials/c-programming/week1.zip',
+                    2: 'study_materials/c-programming/week2.zip',
+                    3: 'study_materials/c-programming/week3.zip',
+                    4: 'study_materials/c-programming/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/KJgsSFOSQv0',
+                    2: 'https://www.youtube.com/embed/87SH2Cn0s9A',
+                    3: 'https://www.youtube.com/embed/irqbmMNs2Bo',
+                    4: 'https://www.youtube.com/embed/Bz4MxDeEM6k'
+                }
+            }, {
+                id: 'cpp',
+                title: 'C++ Programming',
+                description: 'Learn object-oriented programming with C++',
+                pdfFiles: {
+                    1: 'study_materials/cpp/week1.zip',
+                    2: 'study_materials/cpp/week2.zip',
+                    3: 'study_materials/cpp/week3.zip',
+                    4: 'study_materials/cpp/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/-TkoO8Z07hI',
+                    2: 'https://www.youtube.com/embed/vLnPwxZdW4Y',
+                    3: 'https://www.youtube.com/embed/ZzaPdXTrSb8',
+                    4: 'https://www.youtube.com/embed/iVLQeWbgbXs'
+                }
+            }, {
+                id: 'python',
+                title: 'Python Programming',
+                description: 'Start your journey with versatile Python language',
+                pdfFiles: {
+                    1: 'study_materials/python/week1.zip',
+                    2: 'study_materials/python/week2.zip',
+                    3: 'study_materials/python/week3.zip',
+                    4: 'study_materials/python/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/rfscVS0vtbw',
+                    2: 'https://www.youtube.com/embed/HeW-D6KpDwY',
+                    3: 'https://www.youtube.com/embed/8ext9G7xspg',
+                    4: 'https://www.youtube.com/embed/fqF9M92jzUo'
+                }
+            }, {
+                id: 'web-dev',
+                title: 'Web Development',
+                description: 'Build websites with HTML, CSS, and JavaScript',
+                pdfFiles: {
+                    1: 'study_materials/web-dev/week1.zip',
+                    2: 'study_materials/web-dev/week2.zip',
+                    3: 'study_materials/web-dev/week3.zip',
+                    4: 'study_materials/web-dev/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/kUMe1FH4CHE',
+                    2: 'https://www.youtube.com/embed/HGTJBPNC-Gw',
+                    3: 'https://www.youtube.com/embed/PkZNo7MFNFg',
+                    4: 'https://www.youtube.com/embed/krfUjg0S2uI'
+                }
+            }, {
+                id: 'data-science',
+                title: 'Data Science with Python',
+                description: 'Analyze and visualize data using Python',
+                pdfFiles: {
+                    1: 'study_materials/data-science/week1.zip',
+                    2: 'study_materials/data-science/week2.zip',
+                    3: 'study_materials/data-science/week3.zip',
+                    4: 'study_materials/data-science/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/ua-CiDNNj30',
+                    2: 'https://www.youtube.com/embed/r-uOLxNrNk8',
+                    3: 'https://www.youtube.com/embed/aircAruvnKk',
+                    4: 'https://www.youtube.com/embed/LHBE6Q9XlzI'
+                }
+            }, {
+                id: 'ml-ai',
+                title: 'Machine Learning & AI',
+                description: 'Introduction to ML algorithms and AI concepts',
+                pdfFiles: {
+                    1: 'study_materials/ml-ai/week1.zip',
+                    2: 'study_materials/ml-ai/week2.zip',
+                    3: 'study_materials/ml-ai/week3.zip',
+                    4: 'study_materials/ml-ai/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/7eh4d6sabA0',
+                    2: 'https://www.youtube.com/embed/VCJdg7YBbAQ',
+                    3: 'https://www.youtube.com/embed/i_LwzRVP7bg',
+                    4: 'https://www.youtube.com/embed/Hr06nSA-qww'
+                }
+            }, {
+                id: 'mern',
+                title: 'Full Stack Web Development (MERN)',
+                description: 'Build modern web apps with MongoDB, Express, React, Node.js',
+                pdfFiles: {
+                    1: 'study_materials/mern/week1.zip',
+                    2: 'study_materials/mern/week2.zip',
+                    3: 'study_materials/mern/week3.zip',
+                    4: 'study_materials/mern/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/98BzS5Oz5E4',
+                    2: 'https://www.youtube.com/embed/CvCiNeLnZ00',
+                    3: 'https://www.youtube.com/embed/RGKi6LSPDLU',
+                    4: 'https://www.youtube.com/embed/XuFDcZABiDQ'
+                }
+            }, {
+                id: 'java',
+                title: 'Java Programming',
+                description: 'Learn Java with OOP concepts and real projects',
+                pdfFiles: {
+                    1: 'study_materials/java/week1.zip',
+                    2: 'study_materials/java/week2.zip',
+                    3: 'study_materials/java/week3.zip',
+                    4: 'study_materials/java/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/xk4_1vDrzzo',
+                    2: 'https://www.youtube.com/embed/eTXd89t8ngI',
+                    3: 'https://www.youtube.com/embed/5o3fMLPY7qY',
+                    4: 'https://www.youtube.com/embed/UmnCZ7-9yDY'
+                }
+            }, {
+                id: 'dsa',
+                title: 'Data Structures & Algorithms',
+                description: 'Master essential DSA concepts for coding interviews',
+                pdfFiles: {
+                    1: 'study_materials/dsa/week1.zip',
+                    2: 'study_materials/dsa/week2.zip',
+                    3: 'study_materials/dsa/week3.zip',
+                    4: 'study_materials/dsa/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/8hly31xKli0',
+                    2: 'https://www.youtube.com/embed/RBSGKlAvoiM',
+                    3: 'https://www.youtube.com/embed/nqowUJzG-iM',
+                    4: 'https://www.youtube.com/embed/0IAPZzGSbME'
+                }
+            }, {
+                id: 'flutter',
+                title: 'Mobile App Development (Flutter)',
+                description: 'Build cross-platform mobile apps with Flutter',
+                pdfFiles: {
+                    1: 'study_materials/flutter/week1.zip',
+                    2: 'study_materials/flutter/week2.zip',
+                    3: 'study_materials/flutter/week3.zip',
+                    4: 'study_materials/flutter/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/1ukSR1GRtMU',
+                    2: 'https://www.youtube.com/embed/x0uinJvhNxI',
+                    3: 'https://www.youtube.com/embed/VPvVD8t02U8',
+                    4: 'https://www.youtube.com/embed/D4nhaszNW4o'
+                }
+            }, {
+                id: 'aws',
+                title: 'Cloud Computing with AWS',
+                description: 'Deploy and manage applications on AWS cloud',
+                pdfFiles: {
+                    1: 'study_materials/aws/week1.zip',
+                    2: 'study_materials/aws/week2.zip',
+                    3: 'study_materials/aws/week3.zip',
+                    4: 'study_materials/aws/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/ubCNZRNjhyo',
+                    2: 'https://www.youtube.com/embed/3hLmDS179YE',
+                    3: 'https://www.youtube.com/embed/Tg2krHXHzBc',
+                    4: 'https://www.youtube.com/embed/3jZ5vnv-LZc'
+                }
+            }, {
+                id: 'data-analyst',
+                title: 'Data Analyst',
+                description: 'Become a data analyst with statistical and visualization skills',
+                pdfFiles: {
+                    1: 'study_materials/data-analyst/week1.zip',
+                    2: 'study_materials/data-analyst/week2.zip',
+                    3: 'study_materials/data-analyst/week3.zip',
+                    4: 'study_materials/data-analyst/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/rfscVS0vtbw',
+                    2: 'https://www.youtube.com/embed/NMuV2o9yrE4', // Excel for Data Analysis
+                    3: 'https://www.youtube.com/embed/7mz73uXD9DA', // SQL for Data Analysis
+                    4: 'https://www.youtube.com/embed/3u7MQz1EyPY' // Power BI for Data Analysis
+                }
+            }, {
+                id: 'power-bi',
+                title: 'Power BI',
+                description: 'Create interactive dashboards and business intelligence reports',
+                pdfFiles: {
+                    1: 'study_materials/power-bi/week1.zip',
+                    2: 'study_materials/power-bi/week2.zip',
+                    3: 'study_materials/power-bi/week3.zip',
+                    4: 'study_materials/power-bi/week4.zip'
+                },
+                youtubeVideos: {
+                    1: 'https://www.youtube.com/embed/3u7MQz1EyPY',
+                    2: 'https://www.youtube.com/embed/AGrl-H87pRU',
+                    3: 'https://www.youtube.com/embed/5X5LWcLtkzg',
+                    4: 'https://www.youtube.com/embed/mmxVCFceQgU' // Power BI Projects
+                }
+            }],
+
+            // Initialize the application
+            init: function() {
+                this.loadTheme();
+                this.bindEvents();
+                this.checkAuthStatus();
+
+                // Listen for storage events to sync across tabs
+                window.addEventListener('storage', this.handleStorageEvent.bind(this));
+            },
+
+            // Load saved theme from localStorage
+            loadTheme: function() {
+                const savedTheme = localStorage.getItem('axcentra-theme') || 'dark';
+                document.body.className = `${savedTheme}-theme`;
+                this.updateThemeIcon(savedTheme);
+            },
+
+            // Update theme icon based on current theme
+            updateThemeIcon: function(theme) {
+                const themeIcon = document.querySelector('#theme-toggle i');
+                themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            },
+
+            // Bind event listeners
+            bindEvents: function() {
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', this.toggleTheme.bind(this));
+
+                // Login form
+                document.getElementById('login-form').addEventListener('submit', this.handleLogin.bind(this));
+
+                // Show password toggle
+                document.getElementById('toggle-password').addEventListener('click', this.togglePasswordVisibility.bind(this));
+
+                // Navigation
+                document.getElementById('dashboard-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showPage('dashboard-page');
+                    this.updateNavActive('dashboard-link');
+                    this.renderDashboard();
+                });
+
+                document.getElementById('profile-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showPage('profile-page');
+                    this.updateNavActive('profile-link');
+                    this.renderProfile();
+                });
+
+                document.getElementById('logout-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleLogout();
+                });
+
+                // Back to dashboard from course page
+                document.getElementById('back-to-dashboard').addEventListener('click', () => {
+                    this.showPage('dashboard-page');
+                    this.updateNavActive('dashboard-link');
+                });
+
+                // Data export/import
+                document.getElementById('export-data').addEventListener('click', this.exportData.bind(this));
+                document.getElementById('import-data').addEventListener('click', () => {
+                    document.getElementById('import-file').click();
+                });
+
+                document.getElementById('import-file').addEventListener('change', this.importData.bind(this));
+
+                // Profile picture change
+                document.getElementById('change-photo-btn').addEventListener('click', () => {
+                    document.getElementById('profile-picture-input').click();
+                });
+
+                document.getElementById('profile-picture-input').addEventListener('change', this.changeProfilePicture.bind(this));
+
+                // Edit profile button
+                document.getElementById('edit-profile-btn').addEventListener('click', this.editProfile.bind(this));
+            },
+
+            // Toggle password visibility
+            togglePasswordVisibility: function() {
+                const passwordInput = document.getElementById('password');
+                const toggleButton = document.getElementById('toggle-password');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            },
+
+            // Toggle between dark and light theme
+            toggleTheme: function() {
+                const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                document.body.classList.remove(`${currentTheme}-theme`);
+                document.body.classList.add(`${newTheme}-theme`);
+
+                localStorage.setItem('axcentra-theme', newTheme);
+                this.updateThemeIcon(newTheme);
+            },
+
+            // Handle login form submission
+            handleLogin: function(e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+
+                if (password === `${username}@axcentra123`) {
+                    this.authenticateUser(username);
+                } else {
+                    this.showNotification('Invalid credentials. Please try again.', true);
+                }
+            },
+
+            authenticateUser: function(username) {
+                let users = JSON.parse(localStorage.getItem('axcentra-users')) || {};
+
+                // Create user if doesn't exist
+                if (!users[username]) {
+                    users[username] = this.createNewUser(username);
+                    localStorage.setItem('axcentra-users', JSON.stringify(users));
+                }
+
+                // Set current user
+                this.currentUser = users[username];
+                localStorage.setItem('axcentra-current-user', username);
+
+                // Show header and dashboard
+                document.getElementById('header').classList.remove('hidden');
+                this.showPage('dashboard-page');
+                this.updateNavActive('dashboard-link');
+                this.renderDashboard();
+
+                this.showNotification(`Welcome back, ${username}!`);
+            },
+
+            // Create a new user with default data
+            createNewUser: function(username) {
+                // Initialize course progress for all courses
+                const courseProgress = {};
+                this.courseCatalog.forEach(course => {
+                    courseProgress[course.id] = {
+                        weeks: {
+                            1: {
+                                completed: false,
+                                assignmentSubmitted: false,
+                                assignmentLink: ''
+                            },
+                            2: {
+                                completed: false,
+                                assignmentSubmitted: false,
+                                assignmentLink: ''
+                            },
+                            3: {
+                                completed: false,
+                                assignmentSubmitted: false,
+                                assignmentLink: ''
+                            },
+                            4: {
+                                completed: false,
+                                assignmentSubmitted: false,
+                                assignmentLink: ''
+                            }
+                        },
+                        currentWeek: 1
+                    };
+                });
+
+                return {
+                    username: username,
+                    email: `${username}@axcentra.com`,
+                    profilePicture: null,
+                    enrolledCourses: this.courseCatalog.map(course => ({
+                        id: course.id,
+                        title: course.title,
+                        description: course.description,
+                        progress: 0
+                    })),
+                    courseProgress: courseProgress
+                };
+            },
+
+            // Check if user is already logged in
+            checkAuthStatus: function() {
+                const currentUsername = localStorage.getItem('axcentra-current-user');
+                if (currentUsername) {
+                    const users = JSON.parse(localStorage.getItem('axcentra-users')) || {};
+                    if (users[currentUsername]) {
+                        this.currentUser = users[currentUsername];
+                        document.getElementById('header').classList.remove('hidden');
+                        this.showPage('dashboard-page');
+                        this.updateNavActive('dashboard-link');
+                        this.renderDashboard();
+                    }
+                }
+            },
+
+            // Handle logout
+            handleLogout: function() {
+                this.currentUser = null;
+                localStorage.removeItem('axcentra-current-user');
+                document.getElementById('header').classList.add('hidden');
+                this.showPage('login-page');
+                document.getElementById('login-form').reset();
+                this.showNotification('You have been logged out successfully.');
+            },
+
+            // Show specific page and hide others
+            showPage: function(pageId) {
+                // Hide all pages
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+
+                // Show requested page
+                document.getElementById(pageId).classList.remove('hidden');
+            },
+
+            // Update active navigation link
+            updateNavActive: function(activeLinkId) {
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                document.getElementById(activeLinkId).classList.add('active');
+            },
+
+            // Render dashboard with enrolled courses - FIXED
+            renderDashboard: function() {
+                const container = document.getElementById('courses-container');
+                container.innerHTML = '';
+
+                this.currentUser.enrolledCourses.forEach(course => {
+                    const progress = this.calculateCourseProgress(course.id);
+
+                    // Update progress in course object
+                    course.progress = progress;
+
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card';
+                    courseCard.setAttribute('data-course', course.id);
+
+                    courseCard.innerHTML = `
+                        <div class="course-image">
+                            ${course.title}
+                        </div>
+                        <div class="course-content">
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span>Progress</span>
+                                    <span>${progress}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                            </div>
+                            <div class="btn btn-primary continue-btn">
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    `;
+
+                    // DIRECT EVENT LISTENER - Yeh 100% work karega
+                    courseCard.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const courseId = courseCard.getAttribute('data-course');
+                        this.openCourse(courseId);
+                    });
+
+                    container.appendChild(courseCard);
+                });
+
+                // Save updated progress
+                this.saveUserData();
+            },
+
+            // Calculate course progress percentage
+            calculateCourseProgress: function(courseId) {
+                const progress = this.currentUser.courseProgress[courseId];
+                if (!progress) return 0;
+
+                const weeks = progress.weeks;
+                let completedWeeks = 0;
+
+                for (let week in weeks) {
+                    if (weeks[week].completed) completedWeeks++;
+                }
+
+                return Math.round((completedWeeks / 4) * 100);
+            },
+
+            // Open course page - FIXED
+            openCourse: function(courseId) {
+                const course = this.currentUser.enrolledCourses.find(c => c.id === courseId);
+                if (!course) return;
+
+                document.getElementById('course-title').textContent = course.title;
+                this.renderCourseWeeks(courseId);
+                this.showPage('course-page');
+            },
+
+            renderCourseWeeks: function(courseId) {
+                const container = document.getElementById('weeks-container');
+                container.innerHTML = '';
+
+                const courseProgress = this.currentUser.courseProgress[courseId];
+                const course = this.courseCatalog.find(c => c.id === courseId);
+
+                for (let week = 1; week <= 4; week++) {
+                    const weekData = courseProgress.weeks[week];
+                    const isLocked = week > 1 && !courseProgress.weeks[week - 1].completed;
+
+                    const videoUrl = course.youtubeVideos ? course.youtubeVideos[week] : 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+
+                    const weekCard = document.createElement('div');
+                    weekCard.className = 'week-card';
+                    weekCard.innerHTML = `
+                        <div class="week-header ${isLocked ? 'locked' : ''}">
+                            <h3>Week ${week}</h3>
+                            ${isLocked ? 
+                                '<span><i class="fas fa-lock"></i> Locked</span>' : 
+                                (weekData.completed ? 
+                                    '<span><i class="fas fa-check-circle"></i> Completed</span>' : 
+                                    '<span>In Progress</span>')
+                            }
+                        </div>
+                        <div class="week-content">
+                            <div class="video-container">
+                                <iframe src="${videoUrl}" 
+                                        title="Week ${week} Video - ${course.title}" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                </iframe>
+                                ${isLocked ? '<div class="locked-overlay"><i class="fas fa-lock"></i></div>' : ''}
+                            </div>
+                            <div class="actions">
+                                <button class="btn btn-secondary study-material-btn" data-week="${week}" ${isLocked ? 'disabled' : ''}>
+                                    <i class="fas fa-download"></i> Study Material
+                                </button>
+                                <input type="text" class="assignment-input" 
+                                       placeholder="Paste your assignment link here" 
+                                       value="${weekData.assignmentLink || ''}"
+                                       ${isLocked || weekData.assignmentSubmitted ? 'disabled' : ''}>
+                                <button class="btn btn-success submit-assignment-btn" 
+                                        data-week="${week}" 
+                                        ${isLocked || weekData.assignmentSubmitted ? 'disabled' : ''}>
+                                    ${weekData.assignmentSubmitted ? 
+                                        '<i class="fas fa-check"></i> Submitted' : 
+                                        '<i class="fas fa-paper-plane"></i> Submit Assignment'}
+                                </button>
+                                <button class="btn btn-primary mark-complete-btn" 
+                                        data-week="${week}" 
+                                        ${isLocked || !weekData.assignmentSubmitted || weekData.completed ? 'disabled' : ''}>
+                                    ${weekData.completed ? 
+                                        '<i class="fas fa-check-double"></i> Completed' : 
+                                        '<i class="fas fa-flag-checkered"></i> Mark Complete'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(weekCard);
+                }
+
+                this.bindWeekActions(courseId);
+            },
+
+            bindWeekActions: function(courseId) {
+                document.querySelectorAll('.study-material-btn').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.addEventListener('click', (e) => {
+                            const week = e.target.closest('.study-material-btn').dataset.week;
+                            this.downloadStudyMaterial(courseId, week);
+                        });
+                    }
+                });
+
+                document.querySelectorAll('.submit-assignment-btn').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.addEventListener('click', (e) => {
+                            const week = parseInt(e.target.closest('.submit-assignment-btn').dataset.week);
+                            const input = e.target.closest('.actions').querySelector('.assignment-input');
+
+                            if (input.value.trim() === '') {
+                                this.showNotification('Please enter an assignment link', true);
+                                return;
+                            }
+
+                            this.submitAssignment(courseId, week, input.value.trim());
+                        });
+                    }
+                });
+
+                document.querySelectorAll('.mark-complete-btn').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.addEventListener('click', (e) => {
+                            const week = parseInt(e.target.closest('.mark-complete-btn').dataset.week);
+                            this.markWeekComplete(courseId, week);
+                        });
+                    }
+                });
+            },
+
+            downloadStudyMaterial: function(courseId, week) {
+                const course = this.courseCatalog.find(c => c.id === courseId);
+                if (!course || !course.pdfFiles || !course.pdfFiles[week]) {
+                    this.showNotification('Study material not available for this week', true);
+                    return;
+                }
+
+                const filePath = course.pdfFiles[week];
+                const fileExtension = filePath.split('.').pop().toLowerCase();
+
+                if (fileExtension === 'zip') {
+                    this.downloadZipFile(courseId, week, filePath);
+                } else if (fileExtension === 'pdf') {
+                    this.downloadPdfFile(courseId, week, filePath);
+                } else {
+                    this.downloadGenericFile(courseId, week, filePath);
+                }
+            },
+
+            downloadZipFile: function(courseId, week, filePath) {
+                const a = document.createElement('a');
+                a.href = filePath;
+                a.download = `${courseId}-week-${week}-materials.zip`;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                this.showNotification(`ZIP study materials for Week ${week} downloaded!`);
+            },
+
+            downloadPdfFile: function(courseId, week, filePath) {
+                const a = document.createElement('a');
+                a.href = filePath;
+                a.download = `${courseId}-week-${week}.pdf`;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                this.showNotification(`PDF study materials for Week ${week} downloaded!`);
+            },
+
+            downloadGenericFile: function(courseId, week, filePath) {
+                const a = document.createElement('a');
+                a.href = filePath;
+                a.download = `${courseId}-week-${week}-materials.${filePath.split('.').pop()}`;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                this.showNotification(`Study materials for Week ${week} downloaded!`);
+            },
+
+            submitAssignment: function(courseId, week, link) {
+                this.currentUser.courseProgress[courseId].weeks[week].assignmentSubmitted = true;
+                this.currentUser.courseProgress[courseId].weeks[week].assignmentLink = link;
+
+                this.saveUserData();
+                this.renderCourseWeeks(courseId);
+                this.showNotification(`Assignment for Week ${week} submitted successfully!`);
+            },
+
+            markWeekComplete: function(courseId, week) {
+                this.currentUser.courseProgress[courseId].weeks[week].completed = true;
+
+                const courseProgress = this.currentUser.courseProgress[courseId];
+                if (week === courseProgress.currentWeek) {
+                    courseProgress.currentWeek = Math.min(4, week + 1);
+                }
+
+                this.saveUserData();
+                this.renderCourseWeeks(courseId);
+                this.showNotification(`Week ${week} marked as complete!`);
+
+                if (week === 4) {
+                    setTimeout(() => {
+                        this.showNotification('Congratulations! You have completed this course!');
+                    }, 1000);
+                }
+            },
+
+            renderProfile: function() {
+                document.getElementById('profile-name').textContent = this.currentUser.username;
+                document.getElementById('profile-email').textContent = this.currentUser.email;
+
+                const profilePicture = document.getElementById('profile-picture');
+                if (this.currentUser.profilePicture) {
+                    profilePicture.innerHTML = `<img src="${this.currentUser.profilePicture}" alt="Profile Picture">`;
+                } else {
+                    profilePicture.innerHTML = '<i class="fas fa-user"></i>';
+                }
+                profilePicture.innerHTML += '<div class="change-photo" id="change-photo-btn">Change Photo</div>';
+
+                document.getElementById('change-photo-btn').addEventListener('click', () => {
+                    document.getElementById('profile-picture-input').click();
+                });
+
+                const container = document.getElementById('profile-courses');
+                container.innerHTML = '';
+
+                this.currentUser.enrolledCourses.forEach(course => {
+                    const progress = this.calculateCourseProgress(course.id);
+
+                    const courseElement = document.createElement('div');
+                    courseElement.className = 'course-progress';
+                    courseElement.innerHTML = `
+                        <div class="course-progress-header">
+                            <span>${course.title}</span>
+                            <span>${progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                    `;
+
+                    container.appendChild(courseElement);
+                });
+            },
+
+            changeProfilePicture: function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                if (!file.type.match('image.*')) {
+                    this.showNotification('Please select an image file', true);
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    this.currentUser.profilePicture = event.target.result;
+                    this.saveUserData();
+                    this.renderProfile();
+                    this.showNotification('Profile picture updated successfully!');
+                };
+
+                reader.readAsDataURL(file);
+                e.target.value = '';
+            },
+
+            editProfile: function() {
+                const newName = prompt('Enter your new name:', this.currentUser.username);
+                if (newName && newName.trim() !== '') {
+                    this.currentUser.username = newName.trim();
+                    this.saveUserData();
+                    this.renderProfile();
+                    this.showNotification('Profile updated successfully!');
+                }
+            },
+
+            // Export user data as JSON
+            exportData: function() {
+                const dataStr = JSON.stringify(this.currentUser, null, 2);
+                const dataBlob = new Blob([dataStr], {
+                    type: 'application/json'
+                });
+
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `axcentra-data-${this.currentUser.username}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                this.showNotification('Data exported successfully!');
+            },
+
+            // Import user data from JSON file
+            importData: function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const importedData = JSON.parse(event.target.result);
+
+                        // Validate the imported data structure
+                        if (importedData.username && importedData.enrolledCourses && importedData.courseProgress) {
+                            // Update current user data
+                            const users = JSON.parse(localStorage.getItem('axcentra-users')) || {};
+                            users[this.currentUser.username] = importedData;
+                            localStorage.setItem('axcentra-users', JSON.stringify(users));
+
+                            this.currentUser = importedData;
+                            this.renderDashboard();
+                            this.renderProfile();
+
+                            this.showNotification('Data imported successfully!');
+                        } else {
+                            this.showNotification('Invalid data file format', true);
+                        }
+                    } catch (error) {
+                        this.showNotification('Error importing data', true);
+                        console.error(error);
+                    }
+                };
+
+                reader.readAsText(file);
+                e.target.value = ''; // Reset file input
+            },
+
+            // Save user data to localStorage
+            saveUserData: function() {
+                const users = JSON.parse(localStorage.getItem('axcentra-users')) || {};
+                users[this.currentUser.username] = this.currentUser;
+                localStorage.setItem('axcentra-users', JSON.stringify(users));
+
+                // Trigger storage event to sync across tabs
+                localStorage.setItem('axcentra-data-update', Date.now().toString());
+            },
+
+            // Handle storage events for cross-tab synchronization
+            handleStorageEvent: function(e) {
+                if (e.key === 'axcentra-data-update' && this.currentUser) {
+                    // Reload user data from localStorage
+                    const users = JSON.parse(localStorage.getItem('axcentra-users')) || {};
+                    if (users[this.currentUser.username]) {
+                        this.currentUser = users[this.currentUser.username];
+
+                        // Update UI based on current page
+                        if (!document.getElementById('dashboard-page').classList.contains('hidden')) {
+                            this.renderDashboard();
+                        } else if (!document.getElementById('course-page').classList.contains('hidden')) {
+                            // Find which course is currently open
+                            const courseTitle = document.getElementById('course-title').textContent;
+                            const course = this.currentUser.enrolledCourses.find(c => c.title === courseTitle);
+                            if (course) {
+                                this.renderCourseWeeks(course.id);
+                            }
+                        } else if (!document.getElementById('profile-page').classList.contains('hidden')) {
+                            this.renderProfile();
+                        }
+                    }
+                }
+            },
+
+            // Show notification
+            showNotification: function(message, isError = false) {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.classList.toggle('error', isError);
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        };
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            LMS.init();
+        });
+    </script>
+</body>
+
+</html>
